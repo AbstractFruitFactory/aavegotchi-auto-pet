@@ -11,32 +11,22 @@ const provider = new ethers.providers.JsonRpcProvider(NODE_URL)
 
 const wallet = Wallet.fromMnemonic(mnemonic).connect(provider)
 
-const pet1Data = '0x22c6751900000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000049c'
-const pet2Data = '0x22c67519000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000001d1a'
-
+const petData = '0x22c67519000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000001d1a000000000000000000000000000000000000000000000000000000000000049c'
 const tx1 = {
     to: CONTRACT_ADDRESS,
-    data: pet1Data,
-    gasLimit: 80015,
+    data: petData,
+    gasLimit: 100000,
     gasPrice: 10000000000
 }
 
-const tx2 = {
-    to: CONTRACT_ADDRESS,
-    data: pet2Data,
-    gasLimit: 80015,
-    gasPrice: 10000000000
-}
-
-let nextPet = addMinutes(Date.now(), 0)
+let nextPet = addHours(Date.now(), 12)
 
     ; (() => {
         setInterval(async () => {
             if (differenceInMinutes(nextPet, Date.now()) < 1) {
                 await wallet.sendTransaction(tx1)
-                await wallet.sendTransaction(tx2)
 
-                console.log('Sent transactions!')
+                console.log('Sent transaction!')
 
                 nextPet = addMinutes(addHours(Date.now(), 12), 2)
             }
